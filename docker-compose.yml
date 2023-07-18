@@ -1,0 +1,11 @@
+version: '2.1'
+
+services:
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: mqtt
+    restart: unless-stopped
+    ports:
+      - "1883:1883/tcp"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:rw

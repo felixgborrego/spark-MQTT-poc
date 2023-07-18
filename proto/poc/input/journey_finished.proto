@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package poc.input;
+
+import "google/protobuf/timestamp.proto";
+
+// A journey that has ended for different reasons
+// MQTT topic: "input/journey_finished"
+message JourneyFinished {
+    string journey_id = 1;  // Unique identifier of the journey
+    string driver_id = 2;  // Unique identifier of the driver
+    string rider_id = 3;  // Unique identifier of the rider (the person travelling)
+    FinishReason finish_reason = 4;  // The reason why the journey ended
+    google.protobuf.Timestamp started_at = 5;  // The start time of the journey
+    google.protobuf.Timestamp ended_at = 6;  // The end time of the journey
+    uint32 distance = 7;  // Total distance of the journey in meters. Only contains value when finish_reason == DROP_OFF
+    uint32 price = 8;  // The price of the journey in cents of euro. Only contains value when finish_reason == DROP_OFF
+}
+
+enum FinishReason {
+    DROP_OFF = 0;  // The journey ended with the rider being dropped off
+    RIDER_CANCEL = 1;  // The journey was cancelled by the rider
+    DRIVER_CANCEL = 2;  // The journey was cancelled by the driver
+    ADMIN_CANCEL = 3;  // The journey was cancelled by an operator
+}

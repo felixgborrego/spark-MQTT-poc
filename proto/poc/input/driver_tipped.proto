@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package poc.input;
+
+import "google/protobuf/timestamp.proto";
+
+// A tip to a driver for a specific journey. Drivers are not always tipped (riders decide to tip)
+// MQTT topic: "input/driver_tipped"
+message DriverTipped {
+    string driver_id = 1;  // Unique identifier of the driver
+    string rider_id = 2;  // Unique identifier of the rider (the person travelling)
+    string journey_id = 3;  // Unique identifier of the journey
+    google.protobuf.Timestamp tipped_at = 4;  // The timestamp of the tip
+    uint32 amount = 5;  // The amount of the tip in cents of euro
+}

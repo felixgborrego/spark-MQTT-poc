@@ -1,0 +1,22 @@
+# Random Files
+.DS_Store
+
+# Personal Settings for IDEs
+.idea/
+.vscode/
+# Personal settings for running development environments
+env.yaml
+
+# Build / LibDeps Directories
+target
+.bsp/
+.metals/
+project/.bloop/
+project/metals.sbt
+project/project/
+node_modules/
+dist/
+jars/
+.yarn/cache
+**/.yarn/*
+*.pyc

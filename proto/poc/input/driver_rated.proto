@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package poc.input;
+
+import "google/protobuf/timestamp.proto";
+
+// A rating for a driver in a specific journey emitted by the rider. Not all the journeys are rated
+// MQTT topic: "input/driver_rated"
+message DriverRated {
+    string driver_id = 1;  // Unique identifier of the driver
+    string rider_id = 2;  // Unique identifier of the rider (the person travelling)
+    string journey_id = 3;  // Unique identifier of the journey
+    google.protobuf.Timestamp rated_at = 4;  // The timestamp of the rating
+    uint32 rating = 5;  // The rate of the journey (value between 1 and 5)
+}

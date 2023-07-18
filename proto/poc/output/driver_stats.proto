@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package poc.output;
+
+import "google/protobuf/timestamp.proto";
+
+// Statistics for a driver in a specific time interval
+// MQTT topic: "output/driver_stats"
+//
+// Please notice that intervals are left-closed: [a, b)
+//   If the interval duration is set to 10 minutes and the timestamp of an event is "2022-03-16T12:10:00Z",
+//   it should be enclosed in the [2022-03-16T12:10:00Z, 2022-03-16T12:20:00Z) interval,
+//   not in the [2022-03-16T12:00:00Z, 2022-03-16T12:10:00Z) interval
+//
+// Intervals must not overlap, so for 10-minutes intervals we could have the following output:
+//
+//  - [2022-03-16T12:00:00Z, 2022-03-16T12:10:00Z)
+//  - [2022-03-16T12:10:00Z, 2022-03-16T12:20:00Z)
+//  - [2022-03-16T12:20:00Z, 2022-03-16T12:30:00Z)
+//
+// while the following output is incorrect:
+//
+//  - [2022-03-16T12:00:00Z, 2022-03-16T12:10:00Z)
+//  - [2022-03-16T12:05:00Z, 2022-03-16T12:15:00Z)
+//  - [2022-03-16T12:10:00Z, 2022-03-16T12:20:00Z)
+message DriverStats {
+    string driver_id = 1;  // Unique identifier of the driver
+    google.protobuf.Timestamp interval_start = 2;  // The start of the time interval. For the interval [2022-03-16T12:00:00Z, 2022-03-16T12:10:00Z), it should be 2022-03-16T12:00:00Z
+    google.protobuf.Timestamp interval_end = 3;  // The end of the time interval. For the interval [2022-03-16T12:00:00Z, 2022-03-16T12:10:00Z), it should be 2022-03-16T12:10:00Z
+    uint32 total_drop_offs = 4;  // Total number of drop offs
+    uint32 total_driver_cancels = 5;  // Total times the driver cancelled a journey
+    uint32 total_distance = 6;  // Total distance of the journeys in meters
+    uint32 total_price = 7;  // Total price of the journeys in cents of euro
+    uint32 total_tips = 8;  // Total amount of tips the driver received in cents of euro
+    float avg_rating = 9;  // The average of the ratings received by the driver (use 0 if there are no ratings)
+}
